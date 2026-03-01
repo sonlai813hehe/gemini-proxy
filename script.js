@@ -2,18 +2,15 @@ const chatWindow = document.getElementById('chat-window');
 const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
-// QUAN TRỌNG: Thay bằng link Vercel thực tế của bạn
-const PROXY_URL = "/api/chat"; 
+const PROXY_URL = "/api/chat";
 
 async function handleSend() {
     const text = userInput.value.trim();
     if (!text) return;
 
-    // 1. Hiển thị tin nhắn người dùng
     addMessage(text, 'user');
     userInput.value = '';
 
-    // 2. Hiển thị trạng thái chờ
     const loadingMsg = addMessage("Đang suy nghĩ...", 'bot typing');
 
     try {
@@ -24,20 +21,30 @@ async function handleSend() {
         });
 
         const data = await response.json();
-        loadingMsg.remove(); // Xóa trạng thái chờ
+        loadingMsg.remove();
 
-        // 3. Xử lý phản hồi từ Gemini (Cấu trúc chuẩn của AI Studio)
-        if (data.candidates && data.candidates[0].content.parts[0].text) {
-            const reply = data.candidates[0].content.parts[0].text;
+        let reply = "";
+
+        if (data.reply) {
+            reply = data.reply;
+        } else if (data.candidates && data.candidates[0].content.parts[0].text) {
+            reply = data.candidates[0].content.parts[0].text;
+        } else if (data.text) {
+            reply = data.text;
+        }
+
+        if (reply) {
             addMessage(reply, 'bot');
         } else {
-            addMessage("Rất tiếc, App không phản hồi đúng cách.", 'bot');
+            const errorMsg = data.error || "Cấu trúc dữ liệu không khớp.";
+            addMessage("Lỗi: " + errorMsg, 'bot');
+            console.log("Dữ liệu nhận được:", data);
         }
 
     } catch (error) {
         if(loadingMsg) loadingMsg.remove();
-        addMessage("Lỗi kết nối tới Server!", 'bot');
-        console.error("Error:", error);
+        addMessage("Lỗi kết nối tới Server Vercel!", 'bot');
+        console.error("Error details:", error);
     }
 }
 
@@ -46,15 +53,14 @@ function addMessage(text, type) {
     div.className = `message ${type}`;
     div.innerText = text;
     chatWindow.appendChild(div);
-    
-    // Tự động cuộn xuống dưới cùng
+
     chatWindow.scrollTop = chatWindow.scrollHeight;
     return div;
 }
 
-// Bắt sự kiện Click và phím Enter
 sendBtn.addEventListener('click', handleSend);
 userInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSend();
 });
+
 
