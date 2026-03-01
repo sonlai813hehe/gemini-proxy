@@ -3,7 +3,7 @@ const userInput = document.getElementById('user-input');
 const sendBtn = document.getElementById('send-btn');
 
 // QUAN TRỌNG: Thay bằng link Vercel thực tế của bạn
-const PROXY_URL = "https://laicaoson2009-6905.vercel.app"; 
+const PROXY_URL = "/api/chat"; 
 
 async function handleSend() {
     const text = userInput.value.trim();
@@ -57,3 +57,4 @@ sendBtn.addEventListener('click', handleSend);
 userInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') handleSend();
 });
+
