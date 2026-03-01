@@ -1,0 +1,112 @@
+:root {
+    --bg-color: #131314;
+    --container-bg: #1e1f20;
+    --user-msg: #37393b;
+    --bot-msg-border: #444;
+    --text-color: #e3e3e3;
+    --accent: #4285f4;
+    --input-bg: #282a2d;
+}
+
+body {
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+#chat-app {
+    width: 100%;
+    max-width: 600px;
+    height: 85vh;
+    background: var(--container-bg);
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+    border: 1px solid #333;
+}
+
+#chat-header {
+    padding: 18px 25px;
+    background: #1a1a1c;
+    border-bottom: 1px solid #333;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.status-dot { width: 10px; height: 10px; border-radius: 50%; background: #00e676; box-shadow: 0 0 8px #00e676; }
+
+#chat-window {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+/* Tùy chỉnh thanh cuộn */
+#chat-window::-webkit-scrollbar { width: 5px; }
+#chat-window::-webkit-scrollbar-thumb { background: #444; border-radius: 10px; }
+
+.message {
+    max-width: 80%;
+    padding: 12px 16px;
+    border-radius: 18px;
+    font-size: 15px;
+    line-height: 1.5;
+}
+
+.user {
+    align-self: flex-end;
+    background-color: var(--user-msg);
+    border-bottom-right-radius: 4px;
+}
+
+.bot {
+    align-self: flex-start;
+    background-color: transparent;
+    border: 1px solid var(--bot-msg-border);
+    border-bottom-left-radius: 4px;
+}
+
+#input-area {
+    padding: 20px;
+    background: #1e1f20;
+    display: flex;
+    gap: 12px;
+    border-top: 1px solid #333;
+}
+
+#user-input {
+    flex: 1;
+    background: var(--input-bg);
+    border: 1px solid #444;
+    color: white;
+    padding: 12px 20px;
+    border-radius: 30px;
+    outline: none;
+}
+
+#user-input:focus { border-color: var(--accent); }
+
+button {
+    background: var(--accent);
+    color: white;
+    border: none;
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.typing { color: #aaa; font-size: 13px; font-style: italic; }
